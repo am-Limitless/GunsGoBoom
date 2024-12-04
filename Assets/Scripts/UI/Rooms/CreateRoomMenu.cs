@@ -1,0 +1,31 @@
+using Photon.Pun;
+using Photon.Realtime;
+using TMPro;
+using UnityEngine;
+
+public class CreateRoomMenu : MonoBehaviourPunCallbacks
+{
+    [SerializeField] TMP_Text _roomName;
+
+    public void OnClick_CreateRoom()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            return;
+        }
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 4;
+        PhotonNetwork.JoinOrCreateRoom(_roomName.text, options, TypedLobby.Default);
+
+    }
+
+    public override void OnCreatedRoom()
+    {
+        Debug.Log("Created room successfully.", this);
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.Log("Room creation failed." + message, this);
+    }
+}
